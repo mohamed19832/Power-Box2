@@ -141,11 +141,12 @@ export function PopupProvider({ children }: { children: ReactNode }) {
               "Exit intent popup table not found, using default data",
             );
           } else {
-            console.error("Error loading exit intent popup data:", {
-              message: exitError.message,
-              code: exitError.code,
-              details: exitError.details,
-              hint: exitError.hint,
+            console.error("Error loading exit intent popup data - DETAILED:", {
+              message: exitError?.message || 'No message',
+              code: exitError?.code || 'No code',
+              details: exitError?.details || 'No details',
+              hint: exitError?.hint || 'No hint',
+              fullError: JSON.stringify(exitError)
             });
           }
         } else if (exitData && exitData.content) {
