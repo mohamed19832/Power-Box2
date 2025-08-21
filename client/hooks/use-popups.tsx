@@ -121,9 +121,7 @@ export function PopupProvider({ children }: { children: ReactNode }) {
           });
         }
       } catch (productCatchError) {
-        console.info(
-          "Product popup table likely doesn't exist, using defaults",
-        );
+        // Expected: Database/table doesn't exist, using defaults
       }
 
       // Load Exit Intent Popup Data
