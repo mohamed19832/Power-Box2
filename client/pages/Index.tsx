@@ -98,6 +98,8 @@ export default function Index() {
   const handleCardClick = () => {
     console.log("Card clicked - opening modal");
     setIsModalOpen(true);
+    // Track product view
+    trackViewContent("Nutritious Snack Box - 42 Count", "product");
   };
 
   const scrollToProduct = () => {
