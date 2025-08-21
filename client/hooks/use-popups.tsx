@@ -101,7 +101,12 @@ export function PopupProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (productError && productError.code !== "PGRST116") {
-        console.error("Error loading product popup data:", productError);
+        console.error("Error loading product popup data:", {
+          message: productError.message,
+          code: productError.code,
+          details: productError.details,
+          hint: productError.hint
+        });
       } else if (productData && productData.content) {
         setProductPopupData({
           ...defaultProductPopupData,
