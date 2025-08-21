@@ -95,49 +95,62 @@ export function PopupProvider({ children }: { children: ReactNode }) {
   const loadPopupData = async () => {
     try {
       // Load Product Popup Data
-      const { data: productData, error: productError } = await supabase
-        .from("product_popup")
-        .select("*")
-        .single();
+      try {
+        const { data: productData, error: productError } = await supabase
+          .from("product_popup")
+          .select("*")
+          .single();
 
-      if (productError && productError.code !== "PGRST116") {
-        console.error("Error loading product popup data:", {
-          message: productError.message,
-          code: productError.code,
-          details: productError.details,
-          hint: productError.hint
-        });
-      } else if (productData && productData.content) {
-        setProductPopupData({
-          ...defaultProductPopupData,
-          ...productData.content,
-        });
+        if (productError) {
+          if (productError.code === "PGRST116" || productError.code === "42P01") {
+            console.info("Product popup table not found, using default data");
+          } else {
+            console.error("Error loading product popup data:", {
+              message: productError.message,
+              code: productError.code,
+              details: productError.details,
+              hint: productError.hint
+            });
+          }
+        } else if (productData && productData.content) {
+          setProductPopupData({
+            ...defaultProductPopupData,
+            ...productData.content,
+          });
+        }
+      } catch (productCatchError) {
+        console.info("Product popup table likely doesn't exist, using defaults");
       }
 
       // Load Exit Intent Popup Data
-      const { data: exitData, error: exitError } = await supabase
-        .from("exit_intent_popup")
-        .select("*")
-        .single();
+      try {
+        const { data: exitData, error: exitError } = await supabase
+          .from("exit_intent_popup")
+          .select("*")
+          .single();
 
-      if (exitError && exitError.code !== "PGRST116") {
-        console.error("Error loading exit intent popup data:", {
-          message: exitError.message,
-          code: exitError.code,
-          details: exitError.details,
-          hint: exitError.hint
-        });
-      } else if (exitData && exitData.content) {
-        setExitIntentPopupData({
-          ...defaultExitIntentPopupData,
-          ...exitData.content,
-        });
+        if (exitError) {
+          if (exitError.code === "PGRST116" || exitError.code === "42P01") {
+            console.info("Exit intent popup table not found, using default data");
+          } else {
+            console.error("Error loading exit intent popup data:", {
+              message: exitError.message,
+              code: exitError.code,
+              details: exitError.details,
+              hint: exitError.hint
+            });
+          }
+        } else if (exitData && exitData.content) {
+          setExitIntentPopupData({
+            ...defaultExitIntentPopupData,
+            ...exitData.content,
+          });
+        }
+      } catch (exitCatchError) {
+        console.info("Exit intent popup table likely doesn't exist, using defaults");
       }
     } catch (error) {
-      console.error("Error loading popup data (catch):", {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        error: error
-      });
+      console.info("Using default popup data due to database connection issue");
     } finally {
       setIsLoading(false);
     }
