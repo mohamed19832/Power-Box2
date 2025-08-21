@@ -8,6 +8,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import { AdminLayout } from "./components/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import Hero from "./pages/admin/Hero";
+import WhyChoose from "./pages/admin/WhyChoose";
+import Walmart from "./pages/admin/Walmart";
+import InsideBox from "./pages/admin/InsideBox";
+import Testimonials from "./pages/admin/Testimonials";
+import OfferPricing from "./pages/admin/OfferPricing";
+import Footer from "./pages/admin/Footer";
+import SEO from "./pages/admin/SEO";
+import Popups from "./pages/admin/Popups";
 
 const queryClient = new QueryClient();
 
