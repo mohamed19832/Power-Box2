@@ -29,7 +29,6 @@ import { useExitIntent } from "@/hooks/use-exit-intent";
 
 export default function Index() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showExitIntent, setShowExitIntent] = useState(false);
   // Professional pricing
   const [salePrice] = useState(31.95);
