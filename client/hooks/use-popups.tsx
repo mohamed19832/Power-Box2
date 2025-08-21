@@ -106,13 +106,17 @@ export function PopupProvider({ children }: { children: ReactNode }) {
           if (
             productError.code === "PGRST116" ||
             productError.code === "42P01" ||
-            productError.message?.includes('relation') ||
-            productError.message?.includes('table')
+            productError.message?.includes("relation") ||
+            productError.message?.includes("table")
           ) {
             // Expected: table doesn't exist yet, using defaults
           } else {
             // Only log unexpected errors
-            console.warn("Unexpected product popup error:", productError.code, productError.message);
+            console.warn(
+              "Unexpected product popup error:",
+              productError.code,
+              productError.message,
+            );
           }
         } else if (productData && productData.content) {
           setProductPopupData({
@@ -136,13 +140,17 @@ export function PopupProvider({ children }: { children: ReactNode }) {
           if (
             exitError.code === "PGRST116" ||
             exitError.code === "42P01" ||
-            exitError.message?.includes('relation') ||
-            exitError.message?.includes('table')
+            exitError.message?.includes("relation") ||
+            exitError.message?.includes("table")
           ) {
             // Expected: table doesn't exist yet, using defaults
           } else {
             // Only log unexpected errors
-            console.warn("Unexpected exit intent popup error:", exitError.code, exitError.message);
+            console.warn(
+              "Unexpected exit intent popup error:",
+              exitError.code,
+              exitError.message,
+            );
           }
         } else if (exitData && exitData.content) {
           setExitIntentPopupData({
