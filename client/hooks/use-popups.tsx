@@ -108,11 +108,12 @@ export function PopupProvider({ children }: { children: ReactNode }) {
           ) {
             console.info("Product popup table not found, using default data");
           } else {
-            console.error("Error loading product popup data:", {
-              message: productError.message,
-              code: productError.code,
-              details: productError.details,
-              hint: productError.hint,
+            console.error("Error loading product popup data - DETAILED:", {
+              message: productError?.message || 'No message',
+              code: productError?.code || 'No code',
+              details: productError?.details || 'No details',
+              hint: productError?.hint || 'No hint',
+              fullError: JSON.stringify(productError)
             });
           }
         } else if (productData && productData.content) {
