@@ -54,13 +54,17 @@ export function SEOProvider({ children }: { children: ReactNode }) {
         .select("*")
         .single();
 
-      if (error && error.code !== "PGRST116") {
-        console.error("Error loading SEO data:", {
-          message: error.message,
-          code: error.code,
-          details: error.details,
-          hint: error.hint
-        });
+      if (error) {
+        if (error.code === "PGRST116" || error.code === "42P01") {
+          console.info("SEO settings table not found, using default data");
+        } else {
+          console.error("Error loading SEO data:", {
+            message: error.message,
+            code: error.code,
+            details: error.details,
+            hint: error.hint
+          });
+        }
         return;
       }
 
