@@ -6,7 +6,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Save, Upload, Image as ImageIcon, Link as LinkIcon } from "lucide-react";
+import {
+  Save,
+  Upload,
+  Image as ImageIcon,
+  Link as LinkIcon,
+} from "lucide-react";
 
 interface WhyChooseCard {
   title: string;
@@ -29,65 +34,76 @@ const defaultWhyChooseData: WhyChooseData = {
   cards: [
     {
       title: "Variety of Snacks",
-      description: "Perfect mix of breakfast bars and savory snacks for any time of day",
+      description:
+        "Perfect mix of breakfast bars and savory snacks for any time of day",
       icon: "",
-      image: ""
+      image: "",
     },
     {
       title: "High-End Packaging",
-      description: "Attractive and professional packaging that makes a great impression",
+      description:
+        "Attractive and professional packaging that makes a great impression",
       icon: "",
-      image: ""
+      image: "",
     },
     {
       title: "Grab-and-Go Convenience",
       description: "Individually packaged snacks perfect for busy lifestyles",
       icon: "",
-      image: ""
+      image: "",
     },
     {
       title: "Suitable for All Ages",
       description: "Perfect for adults, teens, and college students alike",
       icon: "",
-      image: ""
+      image: "",
     },
     {
       title: "Heartwarming Greeting Card",
       description: "Comes with a special greeting card to show you care",
       icon: "",
-      image: ""
+      image: "",
     },
     {
       title: "42 Count Value",
       description: "Generous quantity ensuring lasting satisfaction and value",
       icon: "",
-      image: ""
-    }
+      image: "",
+    },
   ],
   button: {
     label: "View Product Details",
-    popup_link: ""
-  }
+    popup_link: "",
+  },
 };
 
 export default function WhyChoose() {
-  const [whyChooseData, setWhyChooseData] = useState<WhyChooseData>(defaultWhyChooseData);
+  const [whyChooseData, setWhyChooseData] =
+    useState<WhyChooseData>(defaultWhyChooseData);
   const [isSaving, setIsSaving] = useState(false);
 
   const handleTitleChange = (value: string) => {
-    setWhyChooseData(prev => ({ ...prev, title: value }));
+    setWhyChooseData((prev) => ({ ...prev, title: value }));
   };
 
-  const handleCardChange = (index: number, field: keyof WhyChooseCard, value: string) => {
-    setWhyChooseData(prev => ({
+  const handleCardChange = (
+    index: number,
+    field: keyof WhyChooseCard,
+    value: string,
+  ) => {
+    setWhyChooseData((prev) => ({
       ...prev,
-      cards: prev.cards.map((card, i) => 
-        i === index ? { ...card, [field]: value } : card
-      )
+      cards: prev.cards.map((card, i) =>
+        i === index ? { ...card, [field]: value } : card,
+      ),
     }));
   };
 
-  const handleImageUpload = (index: number, type: 'icon' | 'image', event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (
+    index: number,
+    type: "icon" | "image",
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       // In a real implementation, you would upload to a storage service
@@ -97,12 +113,12 @@ export default function WhyChoose() {
   };
 
   const handleButtonChange = (field: string, value: string) => {
-    setWhyChooseData(prev => ({
+    setWhyChooseData((prev) => ({
       ...prev,
       button: {
         ...prev.button,
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
@@ -110,12 +126,12 @@ export default function WhyChoose() {
     setIsSaving(true);
     try {
       console.log("Saving why choose data:", whyChooseData);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      localStorage.setItem('why_choose_section', JSON.stringify(whyChooseData));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      localStorage.setItem("why_choose_section", JSON.stringify(whyChooseData));
+
       alert("Why Choose section saved successfully!");
     } catch (error) {
       console.error("Error saving why choose data:", error);
@@ -127,7 +143,7 @@ export default function WhyChoose() {
 
   // Load data on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem('why_choose_section');
+    const savedData = localStorage.getItem("why_choose_section");
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
@@ -141,9 +157,11 @@ export default function WhyChoose() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Why Choose Section Management</h2>
-        <Button 
-          onClick={handleSave} 
+        <h2 className="text-2xl font-bold text-gray-900">
+          Why Choose Section Management
+        </h2>
+        <Button
+          onClick={handleSave}
           disabled={isSaving}
           className="flex items-center gap-2"
         >
@@ -193,7 +211,9 @@ export default function WhyChoose() {
                 <Input
                   id={`card-title-${index}`}
                   value={card.title}
-                  onChange={(e) => handleCardChange(index, 'title', e.target.value)}
+                  onChange={(e) =>
+                    handleCardChange(index, "title", e.target.value)
+                  }
                   placeholder="Enter card title..."
                   className="mt-1"
                 />
@@ -205,7 +225,9 @@ export default function WhyChoose() {
                 <Textarea
                   id={`card-desc-${index}`}
                   value={card.description}
-                  onChange={(e) => handleCardChange(index, 'description', e.target.value)}
+                  onChange={(e) =>
+                    handleCardChange(index, "description", e.target.value)
+                  }
                   placeholder="Enter card description..."
                   className="mt-1 min-h-[80px]"
                 />
@@ -218,13 +240,17 @@ export default function WhyChoose() {
                   <div className="flex-1">
                     <Input
                       value={card.icon}
-                      onChange={(e) => handleCardChange(index, 'icon', e.target.value)}
+                      onChange={(e) =>
+                        handleCardChange(index, "icon", e.target.value)
+                      }
                       placeholder="Icon URL or upload..."
                     />
                   </div>
                   <Button
                     variant="outline"
-                    onClick={() => document.getElementById(`icon-upload-${index}`)?.click()}
+                    onClick={() =>
+                      document.getElementById(`icon-upload-${index}`)?.click()
+                    }
                     className="flex items-center gap-1"
                   >
                     <Upload className="w-4 h-4" />
@@ -235,12 +261,16 @@ export default function WhyChoose() {
                   id={`icon-upload-${index}`}
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleImageUpload(index, 'icon', e)}
+                  onChange={(e) => handleImageUpload(index, "icon", e)}
                   className="hidden"
                 />
                 {card.icon && (
                   <div className="mt-2 p-2 bg-gray-50 rounded-lg">
-                    <img src={card.icon} alt="Icon preview" className="w-8 h-8 object-contain" />
+                    <img
+                      src={card.icon}
+                      alt="Icon preview"
+                      className="w-8 h-8 object-contain"
+                    />
                   </div>
                 )}
               </div>
@@ -260,7 +290,11 @@ export default function WhyChoose() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => document.getElementById(`image-upload-${index}`)?.click()}
+                          onClick={() =>
+                            document
+                              .getElementById(`image-upload-${index}`)
+                              ?.click()
+                          }
                           className="flex items-center gap-1"
                         >
                           <Upload className="w-3 h-3" />
@@ -269,7 +303,7 @@ export default function WhyChoose() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleCardChange(index, 'image', '')}
+                          onClick={() => handleCardChange(index, "image", "")}
                           className="text-red-600"
                         >
                           Remove
@@ -282,7 +316,11 @@ export default function WhyChoose() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => document.getElementById(`image-upload-${index}`)?.click()}
+                        onClick={() =>
+                          document
+                            .getElementById(`image-upload-${index}`)
+                            ?.click()
+                        }
                         className="flex items-center gap-1"
                       >
                         <Upload className="w-3 h-3" />
@@ -291,19 +329,21 @@ export default function WhyChoose() {
                     </div>
                   )}
                 </div>
-                
+
                 <input
                   id={`image-upload-${index}`}
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleImageUpload(index, 'image', e)}
+                  onChange={(e) => handleImageUpload(index, "image", e)}
                   className="hidden"
                 />
-                
+
                 <div className="mt-2">
                   <Input
                     value={card.image}
-                    onChange={(e) => handleCardChange(index, 'image', e.target.value)}
+                    onChange={(e) =>
+                      handleCardChange(index, "image", e.target.value)
+                    }
                     placeholder="Or enter image URL..."
                     className="text-sm"
                   />
@@ -325,7 +365,7 @@ export default function WhyChoose() {
             <Input
               id="button-label"
               value={whyChooseData.button.label}
-              onChange={(e) => handleButtonChange('label', e.target.value)}
+              onChange={(e) => handleButtonChange("label", e.target.value)}
               placeholder="Enter button label..."
               className="mt-1"
             />
@@ -337,7 +377,9 @@ export default function WhyChoose() {
               <Input
                 id="button-popup"
                 value={whyChooseData.button.popup_link}
-                onChange={(e) => handleButtonChange('popup_link', e.target.value)}
+                onChange={(e) =>
+                  handleButtonChange("popup_link", e.target.value)
+                }
                 placeholder="Enter popup modal link..."
                 className="flex-1"
               />
@@ -345,7 +387,6 @@ export default function WhyChoose() {
           </div>
         </CardContent>
       </Card>
-
     </div>
   );
 }

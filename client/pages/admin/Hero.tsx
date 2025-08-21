@@ -6,7 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Star, Plus, Trash2, Image as ImageIcon, Save, Upload } from "lucide-react";
+import {
+  Star,
+  Plus,
+  Trash2,
+  Image as ImageIcon,
+  Save,
+  Upload,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface HeroData {
@@ -30,7 +37,8 @@ interface HeroData {
 }
 
 const defaultHeroData: HeroData = {
-  title: "Nutritious Snack Box with Breakfast Bars and Delicious Chips | Gift A Snack (42 Count)",
+  title:
+    "Nutritious Snack Box with Breakfast Bars and Delicious Chips | Gift A Snack (42 Count)",
   rating: 4.6,
   reviews_count: 23,
   old_price: 42.99,
@@ -39,19 +47,19 @@ const defaultHeroData: HeroData = {
     "Fresh & high-quality snacks",
     "Walmart+ offer eligible",
     "Fast & reliable delivery",
-    "Limited stock available"
+    "Limited stock available",
   ],
   buttons: {
     view_product_details: {
       label: "View Product Details",
-      popup_link: ""
+      popup_link: "",
     },
     learn_more: {
       label: "Learn More About This Product",
-      url: ""
-    }
+      url: "",
+    },
   },
-  hero_image: ""
+  hero_image: "",
 };
 
 export default function Hero() {
@@ -60,68 +68,77 @@ export default function Hero() {
   const [isSaving, setIsSaving] = useState(false);
 
   const handleTitleChange = (value: string) => {
-    setHeroData(prev => ({ ...prev, title: value }));
+    setHeroData((prev) => ({ ...prev, title: value }));
   };
 
   const handleRatingChange = (value: string) => {
     const rating = parseFloat(value);
     if (!isNaN(rating) && rating >= 0 && rating <= 5) {
-      setHeroData(prev => ({ ...prev, rating }));
+      setHeroData((prev) => ({ ...prev, rating }));
     }
   };
 
   const adjustRating = (increment: number) => {
     const newRating = Math.max(0, Math.min(5, heroData.rating + increment));
-    setHeroData(prev => ({ ...prev, rating: newRating }));
+    setHeroData((prev) => ({ ...prev, rating: newRating }));
   };
 
   const handleReviewsCountChange = (value: string) => {
     const count = parseInt(value);
     if (!isNaN(count) && count >= 0) {
-      setHeroData(prev => ({ ...prev, reviews_count: count }));
+      setHeroData((prev) => ({ ...prev, reviews_count: count }));
     }
   };
 
-  const handlePriceChange = (field: 'old_price' | 'new_price', value: string) => {
+  const handlePriceChange = (
+    field: "old_price" | "new_price",
+    value: string,
+  ) => {
     const price = parseFloat(value);
     if (!isNaN(price) && price >= 0) {
-      setHeroData(prev => ({ ...prev, [field]: price }));
+      setHeroData((prev) => ({ ...prev, [field]: price }));
     }
   };
 
   const addFeature = () => {
-    setHeroData(prev => ({
+    setHeroData((prev) => ({
       ...prev,
-      features: [...prev.features, ""]
+      features: [...prev.features, ""],
     }));
   };
 
   const updateFeature = (index: number, value: string) => {
-    setHeroData(prev => ({
+    setHeroData((prev) => ({
       ...prev,
-      features: prev.features.map((feature, i) => i === index ? value : feature)
+      features: prev.features.map((feature, i) =>
+        i === index ? value : feature,
+      ),
     }));
   };
 
   const removeFeature = (index: number) => {
     if (heroData.features.length > 1) {
-      setHeroData(prev => ({
+      setHeroData((prev) => ({
         ...prev,
-        features: prev.features.filter((_, i) => i !== index)
+        features: prev.features.filter((_, i) => i !== index),
       }));
     }
   };
 
-  const handleButtonChange = (buttonType: 'view_product_details' | 'learn_more', field: string, value: string) => {
-    setHeroData(prev => ({
+  const handleButtonChange = (
+    buttonType: "view_product_details" | "learn_more",
+    field: string,
+    value: string,
+  ) => {
+    setHeroData((prev) => ({
       ...prev,
       buttons: {
         ...prev.buttons,
         [buttonType]: {
           ...prev.buttons[buttonType],
-          [field]: value
-        }
-      }
+          [field]: value,
+        },
+      },
     }));
   };
 
@@ -131,7 +148,7 @@ export default function Hero() {
       // In a real implementation, you would upload to a storage service
       // For now, we'll create a temporary URL
       const imageUrl = URL.createObjectURL(file);
-      setHeroData(prev => ({ ...prev, hero_image: imageUrl }));
+      setHeroData((prev) => ({ ...prev, hero_image: imageUrl }));
     }
   };
 
@@ -141,13 +158,13 @@ export default function Hero() {
       // Here you would save to your backend/database
       // For now, we'll just simulate a save operation
       console.log("Saving hero data:", heroData);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // You could save to localStorage, send to API, etc.
-      localStorage.setItem('hero_section', JSON.stringify(heroData));
-      
+      localStorage.setItem("hero_section", JSON.stringify(heroData));
+
       alert("Hero section saved successfully!");
     } catch (error) {
       console.error("Error saving hero data:", error);
@@ -159,7 +176,7 @@ export default function Hero() {
 
   // Load data on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem('hero_section');
+    const savedData = localStorage.getItem("hero_section");
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
@@ -173,9 +190,11 @@ export default function Hero() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Hero Section Management</h2>
-        <Button 
-          onClick={handleSave} 
+        <h2 className="text-2xl font-bold text-gray-900">
+          Hero Section Management
+        </h2>
+        <Button
+          onClick={handleSave}
           disabled={isSaving}
           className="flex items-center gap-2"
         >
@@ -253,7 +272,7 @@ export default function Hero() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Star Display */}
               <div className="flex items-center gap-2">
                 <div className="flex">
@@ -262,11 +281,11 @@ export default function Hero() {
                       key={i}
                       className={cn(
                         "h-5 w-5",
-                        i < Math.floor(heroData.rating) 
-                          ? "text-yellow-400 fill-current" 
-                          : i < heroData.rating 
-                            ? "text-yellow-400 fill-current" 
-                            : "text-gray-300"
+                        i < Math.floor(heroData.rating)
+                          ? "text-yellow-400 fill-current"
+                          : i < heroData.rating
+                            ? "text-yellow-400 fill-current"
+                            : "text-gray-300",
                       )}
                     />
                   ))}
@@ -314,7 +333,9 @@ export default function Hero() {
                     min="0"
                     step="0.01"
                     value={heroData.old_price}
-                    onChange={(e) => handlePriceChange('old_price', e.target.value)}
+                    onChange={(e) =>
+                      handlePriceChange("old_price", e.target.value)
+                    }
                     className="mt-1"
                   />
                 </div>
@@ -326,7 +347,9 @@ export default function Hero() {
                     min="0"
                     step="0.01"
                     value={heroData.new_price}
-                    onChange={(e) => handlePriceChange('new_price', e.target.value)}
+                    onChange={(e) =>
+                      handlePriceChange("new_price", e.target.value)
+                    }
                     className="mt-1"
                   />
                 </div>
@@ -334,8 +357,12 @@ export default function Hero() {
               <div className="p-3 bg-gray-50 rounded-lg">
                 <p className="text-sm font-medium">Preview:</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-gray-500 line-through">${heroData.old_price.toFixed(2)}</span>
-                  <span className="text-green-600 font-bold text-lg">${heroData.new_price.toFixed(2)}</span>
+                  <span className="text-gray-500 line-through">
+                    ${heroData.old_price.toFixed(2)}
+                  </span>
+                  <span className="text-green-600 font-bold text-lg">
+                    ${heroData.new_price.toFixed(2)}
+                  </span>
                   <Badge variant="secondary" className="text-xs">
                     Save ${(heroData.old_price - heroData.new_price).toFixed(2)}
                   </Badge>
@@ -355,7 +382,13 @@ export default function Hero() {
                 <Input
                   id="btn1-label"
                   value={heroData.buttons.view_product_details.label}
-                  onChange={(e) => handleButtonChange('view_product_details', 'label', e.target.value)}
+                  onChange={(e) =>
+                    handleButtonChange(
+                      "view_product_details",
+                      "label",
+                      e.target.value,
+                    )
+                  }
                   className="mt-1"
                 />
               </div>
@@ -364,20 +397,28 @@ export default function Hero() {
                 <Input
                   id="btn1-popup"
                   value={heroData.buttons.view_product_details.popup_link}
-                  onChange={(e) => handleButtonChange('view_product_details', 'popup_link', e.target.value)}
+                  onChange={(e) =>
+                    handleButtonChange(
+                      "view_product_details",
+                      "popup_link",
+                      e.target.value,
+                    )
+                  }
                   placeholder="Enter popup modal link..."
                   className="mt-1"
                 />
               </div>
-              
+
               <Separator />
-              
+
               <div>
                 <Label htmlFor="btn2-label">Button 2 - Label</Label>
                 <Input
                   id="btn2-label"
                   value={heroData.buttons.learn_more.label}
-                  onChange={(e) => handleButtonChange('learn_more', 'label', e.target.value)}
+                  onChange={(e) =>
+                    handleButtonChange("learn_more", "label", e.target.value)
+                  }
                   className="mt-1"
                 />
               </div>
@@ -386,7 +427,9 @@ export default function Hero() {
                 <Input
                   id="btn2-url"
                   value={heroData.buttons.learn_more.url}
-                  onChange={(e) => handleButtonChange('learn_more', 'url', e.target.value)}
+                  onChange={(e) =>
+                    handleButtonChange("learn_more", "url", e.target.value)
+                  }
                   placeholder="https://example.com"
                   className="mt-1"
                 />
@@ -453,7 +496,9 @@ export default function Hero() {
                     />
                     <Button
                       variant="outline"
-                      onClick={() => document.getElementById('image-upload')?.click()}
+                      onClick={() =>
+                        document.getElementById("image-upload")?.click()
+                      }
                       className="flex items-center gap-2"
                     >
                       <Upload className="w-4 h-4" />
@@ -467,7 +512,9 @@ export default function Hero() {
                       <p className="text-gray-600">No image uploaded</p>
                       <Button
                         variant="outline"
-                        onClick={() => document.getElementById('image-upload')?.click()}
+                        onClick={() =>
+                          document.getElementById("image-upload")?.click()
+                        }
                         className="mt-2 flex items-center gap-2"
                       >
                         <Upload className="w-4 h-4" />
@@ -477,7 +524,7 @@ export default function Hero() {
                   </div>
                 )}
               </div>
-              
+
               <input
                 id="image-upload"
                 type="file"
@@ -485,14 +532,19 @@ export default function Hero() {
                 onChange={handleImageUpload}
                 className="hidden"
               />
-              
+
               {heroData.hero_image && (
                 <div>
                   <Label htmlFor="image-url">Or enter image URL:</Label>
                   <Input
                     id="image-url"
                     value={heroData.hero_image}
-                    onChange={(e) => setHeroData(prev => ({ ...prev, hero_image: e.target.value }))}
+                    onChange={(e) =>
+                      setHeroData((prev) => ({
+                        ...prev,
+                        hero_image: e.target.value,
+                      }))
+                    }
                     placeholder="https://example.com/image.jpg"
                     className="mt-1"
                   />
@@ -500,7 +552,6 @@ export default function Hero() {
               )}
             </CardContent>
           </Card>
-
         </div>
       </div>
     </div>

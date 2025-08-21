@@ -1,5 +1,11 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import { supabase } from "@/lib/supabaseClient";
 
 interface ProductPopupData {
   title: string;
@@ -38,87 +44,98 @@ interface PopupContextType {
 }
 
 const defaultProductPopupData: ProductPopupData = {
-  title: "Nutritious Snack Box with Breakfast Bars and Delicious Chips | Gift A Snack (42 Count)",
-  description: "View detailed product information, pricing, and purchase options for this 42-piece snack collection.",
+  title:
+    "Nutritious Snack Box with Breakfast Bars and Delicious Chips | Gift A Snack (42 Count)",
+  description:
+    "View detailed product information, pricing, and purchase options for this 42-piece snack collection.",
   product_name: "Nutritious Snack Box - Gift A Snack",
   rating: 4.6,
   reviews_count: 23,
   original_price: 42.99,
   discounted_price: 31.95,
-  features: [
-    "Fresh & high-quality snacks",
-    "Walmart+ offer eligible"
-  ],
+  features: ["Fresh & high-quality snacks", "Walmart+ offer eligible"],
   pieces_count: 42,
   additional_details: [
     "Ultimate snack experience in a beautifully designed high-end packaging box",
     "Packed with a variety of breakfast bars and savory snacks for daily energy",
     "Individually packaged snacks for convenient grab-and-go options",
     "Ideal for adults, teens, and college students alike",
-    "Arrives with a heartwarming greeting card for a personal touch"
+    "Arrives with a heartwarming greeting card for a personal touch",
   ],
-  popup_image: "https://cdn.builder.io/api/v1/image/assets%2F84282e2d620247d2b8d8845fda2c790e%2F79d471e5bc56457eb2c3b1c3eb6586ae?format=webp&width=800"
+  popup_image:
+    "https://cdn.builder.io/api/v1/image/assets%2F84282e2d620247d2b8d8845fda2c790e%2F79d471e5bc56457eb2c3b1c3eb6586ae?format=webp&width=800",
 };
 
 const defaultExitIntentPopupData: ExitIntentPopupData = {
   title: "Stay Updated",
-  description: "👉 Subscribe now to be the first to know about our upcoming exclusive offers\n\n👉 Join our mailing list and get the latest news and special deals before anyone else.",
+  description:
+    "👉 Subscribe now to be the first to know about our upcoming exclusive offers\n\n👉 Join our mailing list and get the latest news and special deals before anyone else.",
   email_placeholder: "👉 Enter your email here",
   subscribe_button_text: "👉 Subscribe Now",
   dismiss_button_text: "👉 Maybe later",
-  privacy_note: "👉 🔒 We will never send you spam. You can unsubscribe anytime",
+  privacy_note:
+    "👉 🔒 We will never send you spam. You can unsubscribe anytime",
   destination_email: "",
   mailchimp_api_key: "",
   mailchimp_list_id: "",
   brevo_api_key: "",
-  brevo_list_id: ""
+  brevo_list_id: "",
 };
 
 const PopupContext = createContext<PopupContextType | undefined>(undefined);
 
 export function PopupProvider({ children }: { children: ReactNode }) {
-  const [productPopupData, setProductPopupData] = useState<ProductPopupData>(defaultProductPopupData);
-  const [exitIntentPopupData, setExitIntentPopupData] = useState<ExitIntentPopupData>(defaultExitIntentPopupData);
+  const [productPopupData, setProductPopupData] = useState<ProductPopupData>(
+    defaultProductPopupData,
+  );
+  const [exitIntentPopupData, setExitIntentPopupData] =
+    useState<ExitIntentPopupData>(defaultExitIntentPopupData);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadPopupData = async () => {
     try {
       // Load Product Popup Data
       const { data: productData, error: productError } = await supabase
-        .from('product_popup')
-        .select('*')
+        .from("product_popup")
+        .select("*")
         .single();
 
-      if (productError && productError.code !== 'PGRST116') {
-        console.error('Error loading product popup data:', productError);
+      if (productError && productError.code !== "PGRST116") {
+        console.error("Error loading product popup data:", productError);
       } else if (productData && productData.content) {
-        setProductPopupData({ ...defaultProductPopupData, ...productData.content });
+        setProductPopupData({
+          ...defaultProductPopupData,
+          ...productData.content,
+        });
       }
 
       // Load Exit Intent Popup Data
       const { data: exitData, error: exitError } = await supabase
-        .from('exit_intent_popup')
-        .select('*')
+        .from("exit_intent_popup")
+        .select("*")
         .single();
 
-      if (exitError && exitError.code !== 'PGRST116') {
-        console.error('Error loading exit intent popup data:', exitError);
+      if (exitError && exitError.code !== "PGRST116") {
+        console.error("Error loading exit intent popup data:", exitError);
       } else if (exitData && exitData.content) {
-        setExitIntentPopupData({ ...defaultExitIntentPopupData, ...exitData.content });
+        setExitIntentPopupData({
+          ...defaultExitIntentPopupData,
+          ...exitData.content,
+        });
       }
     } catch (error) {
-      console.error('Error loading popup data:', error);
+      console.error("Error loading popup data:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   const updateProductPopupData = (newData: Partial<ProductPopupData>) => {
-    setProductPopupData(prev => ({ ...prev, ...newData }));
+    setProductPopupData((prev) => ({ ...prev, ...newData }));
   };
 
   const updateExitIntentPopupData = (newData: Partial<ExitIntentPopupData>) => {
-    setExitIntentPopupData(prev => ({ ...prev, ...newData }));
+    setExitIntentPopupData((prev) => ({ ...prev, ...newData }));
   };
 
   useEffect(() => {
@@ -126,13 +143,15 @@ export function PopupProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <PopupContext.Provider value={{
-      productPopupData,
-      exitIntentPopupData,
-      updateProductPopupData,
-      updateExitIntentPopupData,
-      isLoading
-    }}>
+    <PopupContext.Provider
+      value={{
+        productPopupData,
+        exitIntentPopupData,
+        updateProductPopupData,
+        updateExitIntentPopupData,
+        isLoading,
+      }}
+    >
       {children}
     </PopupContext.Provider>
   );
@@ -141,7 +160,7 @@ export function PopupProvider({ children }: { children: ReactNode }) {
 export function usePopups() {
   const context = useContext(PopupContext);
   if (context === undefined) {
-    throw new Error('usePopups must be used within a PopupProvider');
+    throw new Error("usePopups must be used within a PopupProvider");
   }
   return context;
 }
@@ -155,34 +174,49 @@ export function useEmailSubscription() {
       // Send to destination email if provided
       if (exitIntentPopupData.destination_email) {
         // In a real implementation, you would send this to your backend
-        console.log(`Sending subscription email ${email} to ${exitIntentPopupData.destination_email}`);
+        console.log(
+          `Sending subscription email ${email} to ${exitIntentPopupData.destination_email}`,
+        );
       }
 
       // Mailchimp integration
-      if (exitIntentPopupData.mailchimp_api_key && exitIntentPopupData.mailchimp_list_id) {
+      if (
+        exitIntentPopupData.mailchimp_api_key &&
+        exitIntentPopupData.mailchimp_list_id
+      ) {
         // Mailchimp API call would go here
-        console.log('Sending to Mailchimp:', { email, listId: exitIntentPopupData.mailchimp_list_id });
+        console.log("Sending to Mailchimp:", {
+          email,
+          listId: exitIntentPopupData.mailchimp_list_id,
+        });
       }
 
       // Brevo integration
-      if (exitIntentPopupData.brevo_api_key && exitIntentPopupData.brevo_list_id) {
+      if (
+        exitIntentPopupData.brevo_api_key &&
+        exitIntentPopupData.brevo_list_id
+      ) {
         // Brevo API call would go here
-        console.log('Sending to Brevo:', { email, listId: exitIntentPopupData.brevo_list_id });
+        console.log("Sending to Brevo:", {
+          email,
+          listId: exitIntentPopupData.brevo_list_id,
+        });
       }
 
       // Store in Supabase for backup
-      await supabase
-        .from('email_subscriptions')
-        .insert({
-          email,
-          subscribed_at: new Date().toISOString(),
-          source: 'exit_intent_popup'
-        });
+      await supabase.from("email_subscriptions").insert({
+        email,
+        subscribed_at: new Date().toISOString(),
+        source: "exit_intent_popup",
+      });
 
-      return { success: true, message: 'Successfully subscribed!' };
+      return { success: true, message: "Successfully subscribed!" };
     } catch (error) {
-      console.error('Error subscribing email:', error);
-      return { success: false, message: 'Error subscribing. Please try again.' };
+      console.error("Error subscribing email:", error);
+      return {
+        success: false,
+        message: "Error subscribing. Please try again.",
+      };
     }
   };
 

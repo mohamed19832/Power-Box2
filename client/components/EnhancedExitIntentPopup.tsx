@@ -11,10 +11,10 @@ interface EnhancedExitIntentPopupProps {
   onSubscribe?: (email: string) => void;
 }
 
-export function EnhancedExitIntentPopup({ 
-  isOpen, 
-  onClose, 
-  onSubscribe 
+export function EnhancedExitIntentPopup({
+  isOpen,
+  onClose,
+  onSubscribe,
 }: EnhancedExitIntentPopupProps) {
   const { exitIntentPopupData } = usePopups();
   const { subscribeEmail } = useEmailSubscription();
@@ -24,7 +24,7 @@ export function EnhancedExitIntentPopup({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !email.includes("@")) {
       setMessage("Please enter a valid email address");
       return;
@@ -35,7 +35,7 @@ export function EnhancedExitIntentPopup({
 
     try {
       const result = await subscribeEmail(email);
-      
+
       if (result.success) {
         setMessage("Thank you for subscribing! 🎉");
         if (onSubscribe) {
@@ -78,11 +78,11 @@ export function EnhancedExitIntentPopup({
             initial={{ scale: 0.8, opacity: 0, y: 50 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 50 }}
-            transition={{ 
-              type: "spring", 
-              damping: 25, 
+            transition={{
+              type: "spring",
+              damping: 25,
               stiffness: 500,
-              duration: 0.3 
+              duration: 0.3,
             }}
             className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full mx-auto overflow-hidden"
             onClick={(e) => e.stopPropagation()}
@@ -126,9 +126,13 @@ export function EnhancedExitIntentPopup({
                 </div>
 
                 {message && (
-                  <div className={`text-center text-sm ${
-                    message.includes("Thank you") ? "text-green-600" : "text-red-600"
-                  }`}>
+                  <div
+                    className={`text-center text-sm ${
+                      message.includes("Thank you")
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
                     {message}
                   </div>
                 )}
@@ -148,7 +152,7 @@ export function EnhancedExitIntentPopup({
                       exitIntentPopupData.subscribe_button_text
                     )}
                   </Button>
-                  
+
                   <Button
                     type="button"
                     variant="outline"

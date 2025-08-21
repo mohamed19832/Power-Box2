@@ -9,7 +9,11 @@ const adminSections = [
   { id: "walmart", label: "Walmart", path: "/admin/walmart" },
   { id: "inside-box", label: "Inside Box", path: "/admin/inside-box" },
   { id: "testimonials", label: "Testimonials", path: "/admin/testimonials" },
-  { id: "offer-pricing", label: "Offer / Pricing", path: "/admin/offer-pricing" },
+  {
+    id: "offer-pricing",
+    label: "Offer / Pricing",
+    path: "/admin/offer-pricing",
+  },
   { id: "footer", label: "Footer (Social Links)", path: "/admin/footer" },
   { id: "seo", label: "SEO", path: "/admin/seo" },
   { id: "popups", label: "Popups", path: "/admin/popups" },
@@ -38,7 +42,7 @@ export function AdminLayout() {
                         "block px-3 py-2 rounded-md text-sm font-medium transition-colors",
                         isActive
                           ? "bg-primary text-primary-foreground"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
                       )
                     }
                   >

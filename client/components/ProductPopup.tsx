@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, Star, ShoppingCart, Check } from "lucide-react";
+import {
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Star,
+  ShoppingCart,
+  Check,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,7 +30,11 @@ interface ProductPopupProps {
   onProceedToWalmart: () => void;
 }
 
-export function ProductPopup({ isOpen, onClose, onProceedToWalmart }: ProductPopupProps) {
+export function ProductPopup({
+  isOpen,
+  onClose,
+  onProceedToWalmart,
+}: ProductPopupProps) {
   const { productPopupData } = usePopups();
   const { trackViewContent } = useTracking();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -60,7 +71,7 @@ export function ProductPopup({ isOpen, onClose, onProceedToWalmart }: ProductPop
             <X className="h-5 w-5 text-gray-600" />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
-          
+
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -101,7 +112,10 @@ export function ProductPopup({ isOpen, onClose, onProceedToWalmart }: ProductPop
               <div className="relative mb-4 sm:mb-6">
                 <div className="relative overflow-hidden rounded-xl shadow-lg bg-gray-50 mx-auto max-w-[280px] sm:max-w-none">
                   <img
-                    src={productImages[currentImageIndex] || productPopupData.popup_image}
+                    src={
+                      productImages[currentImageIndex] ||
+                      productPopupData.popup_image
+                    }
                     alt={productPopupData.product_name}
                     className="w-full h-40 sm:h-64 object-contain"
                     loading="lazy"
@@ -142,32 +156,47 @@ export function ProductPopup({ isOpen, onClose, onProceedToWalmart }: ProductPop
                       key={i}
                       className={cn(
                         "h-4 w-4 sm:h-4 sm:w-4",
-                        i < Math.floor(productPopupData.rating) 
-                          ? "text-yellow-400 fill-current" 
-                          : i < productPopupData.rating 
-                            ? "text-yellow-400 fill-current" 
-                            : "text-gray-300"
+                        i < Math.floor(productPopupData.rating)
+                          ? "text-yellow-400 fill-current"
+                          : i < productPopupData.rating
+                            ? "text-yellow-400 fill-current"
+                            : "text-gray-300",
                       )}
                     />
                   ))}
                 </div>
                 <span className="ml-2 text-sm sm:text-sm text-gray-700 font-medium">
-                  {productPopupData.rating.toFixed(1)} ⭐ ({productPopupData.reviews_count} reviews)
+                  {productPopupData.rating.toFixed(1)} ⭐ (
+                  {productPopupData.reviews_count} reviews)
                 </span>
               </div>
 
               {/* Pricing Section */}
               <div className="mb-4 p-3 sm:p-4 bg-blue-50 rounded-xl border border-blue-200">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-gray-500 line-through text-lg">${productPopupData.original_price.toFixed(2)}</span>
-                  <span className="text-green-600 font-bold text-2xl">${productPopupData.discounted_price.toFixed(2)}</span>
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
-                    Save ${(productPopupData.original_price - productPopupData.discounted_price).toFixed(2)}
+                  <span className="text-gray-500 line-through text-lg">
+                    ${productPopupData.original_price.toFixed(2)}
+                  </span>
+                  <span className="text-green-600 font-bold text-2xl">
+                    ${productPopupData.discounted_price.toFixed(2)}
+                  </span>
+                  <Badge
+                    variant="secondary"
+                    className="bg-green-100 text-green-800"
+                  >
+                    Save $
+                    {(
+                      productPopupData.original_price -
+                      productPopupData.discounted_price
+                    ).toFixed(2)}
                   </Badge>
                 </div>
-                
+
                 {productPopupData.features.map((feature, index) => (
-                  <div key={index} className="text-sm text-blue-600 font-medium flex items-center gap-1">
+                  <div
+                    key={index}
+                    className="text-sm text-blue-600 font-medium flex items-center gap-1"
+                  >
                     <svg
                       className="w-3 h-3"
                       fill="currentColor"

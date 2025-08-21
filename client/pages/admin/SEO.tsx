@@ -6,7 +6,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Save, Upload, Image as ImageIcon, ExternalLink, Eye, Search, Share2, Settings } from "lucide-react";
+import {
+  Save,
+  Upload,
+  Image as ImageIcon,
+  ExternalLink,
+  Eye,
+  Search,
+  Share2,
+  Settings,
+} from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { useSEO } from "@/hooks/use-seo";
 
@@ -28,36 +37,38 @@ export default function SEO() {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleChange = (field: keyof SEOData, value: string) => {
-    setSeoData(prev => ({ ...prev, [field]: value }));
+    setSeoData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       try {
         // Upload to Supabase Storage
-        const fileExt = file.name.split('.').pop();
+        const fileExt = file.name.split(".").pop();
         const fileName = `og-image-${Date.now()}.${fileExt}`;
-        
+
         const { data, error } = await supabase.storage
-          .from('images')
+          .from("images")
           .upload(fileName, file);
 
         if (error) {
-          console.error('Upload error:', error);
-          alert('Error uploading image. Please try again.');
+          console.error("Upload error:", error);
+          alert("Error uploading image. Please try again.");
           return;
         }
 
         // Get public URL
-        const { data: { publicUrl } } = supabase.storage
-          .from('images')
-          .getPublicUrl(fileName);
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("images").getPublicUrl(fileName);
 
-        handleChange('og_image', publicUrl);
+        handleChange("og_image", publicUrl);
       } catch (error) {
-        console.error('Upload error:', error);
-        alert('Error uploading image. Please try again.');
+        console.error("Upload error:", error);
+        alert("Error uploading image. Please try again.");
       }
     }
   };
@@ -65,12 +76,12 @@ export default function SEO() {
   const loadData = async () => {
     try {
       const { data, error } = await supabase
-        .from('seo_settings')
-        .select('*')
+        .from("seo_settings")
+        .select("*")
         .single();
 
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error loading data:', error);
+      if (error && error.code !== "PGRST116") {
+        console.error("Error loading data:", error);
         return;
       }
 
@@ -78,7 +89,7 @@ export default function SEO() {
         setSeoData(data.content);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error("Error loading data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -87,25 +98,25 @@ export default function SEO() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const { data, error } = await supabase
-        .from('seo_settings')
-        .upsert({
-          id: 1,
-          content: seoData,
-          updated_at: new Date().toISOString()
-        });
+      const { data, error } = await supabase.from("seo_settings").upsert({
+        id: 1,
+        content: seoData,
+        updated_at: new Date().toISOString(),
+      });
 
       if (error) {
-        console.error('Error saving data:', error);
-        alert('Error saving SEO settings. Please try again.');
+        console.error("Error saving data:", error);
+        alert("Error saving SEO settings. Please try again.");
       } else {
         // Update the context to apply changes immediately
         updateSEOData(seoData);
-        alert('SEO settings saved successfully! Changes are now live on your website.');
+        alert(
+          "SEO settings saved successfully! Changes are now live on your website.",
+        );
       }
     } catch (error) {
-      console.error('Error saving data:', error);
-      alert('Error saving SEO settings. Please try again.');
+      console.error("Error saving data:", error);
+      alert("Error saving SEO settings. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -127,7 +138,7 @@ export default function SEO() {
     return {
       count,
       isOverLimit,
-      remaining: limit - count
+      remaining: limit - count,
     };
   };
 
@@ -155,9 +166,11 @@ export default function SEO() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">SEO & Tracking Settings</h2>
-        <Button 
-          onClick={handleSave} 
+        <h2 className="text-2xl font-bold text-gray-900">
+          SEO & Tracking Settings
+        </h2>
+        <Button
+          onClick={handleSave}
           disabled={isSaving}
           className="flex items-center gap-2"
         >
@@ -192,12 +205,15 @@ export default function SEO() {
                 <Input
                   id="meta-title"
                   value={seoData.meta_title}
-                  onChange={(e) => handleChange('meta_title', e.target.value)}
+                  onChange={(e) => handleChange("meta_title", e.target.value)}
                   placeholder="Enter meta title..."
-                  className={`mt-1 ${titleCount.isOverLimit ? 'border-red-300' : ''}`}
+                  className={`mt-1 ${titleCount.isOverLimit ? "border-red-300" : ""}`}
                 />
-                <p className={`text-xs mt-1 ${titleCount.isOverLimit ? 'text-red-600' : 'text-gray-500'}`}>
-                  {titleCount.count}/60 characters {titleCount.isOverLimit && '(Too long for optimal SEO)'}
+                <p
+                  className={`text-xs mt-1 ${titleCount.isOverLimit ? "text-red-600" : "text-gray-500"}`}
+                >
+                  {titleCount.count}/60 characters{" "}
+                  {titleCount.isOverLimit && "(Too long for optimal SEO)"}
                 </p>
               </div>
 
@@ -206,12 +222,17 @@ export default function SEO() {
                 <Textarea
                   id="meta-description"
                   value={seoData.meta_description}
-                  onChange={(e) => handleChange('meta_description', e.target.value)}
+                  onChange={(e) =>
+                    handleChange("meta_description", e.target.value)
+                  }
                   placeholder="Enter meta description..."
-                  className={`mt-1 min-h-[80px] ${descriptionCount.isOverLimit ? 'border-red-300' : ''}`}
+                  className={`mt-1 min-h-[80px] ${descriptionCount.isOverLimit ? "border-red-300" : ""}`}
                 />
-                <p className={`text-xs mt-1 ${descriptionCount.isOverLimit ? 'text-red-600' : 'text-gray-500'}`}>
-                  {descriptionCount.count}/160 characters {descriptionCount.isOverLimit && '(Too long for optimal SEO)'}
+                <p
+                  className={`text-xs mt-1 ${descriptionCount.isOverLimit ? "text-red-600" : "text-gray-500"}`}
+                >
+                  {descriptionCount.count}/160 characters{" "}
+                  {descriptionCount.isOverLimit && "(Too long for optimal SEO)"}
                 </p>
               </div>
 
@@ -220,7 +241,9 @@ export default function SEO() {
                 <Input
                   id="meta-keywords"
                   value={seoData.meta_keywords}
-                  onChange={(e) => handleChange('meta_keywords', e.target.value)}
+                  onChange={(e) =>
+                    handleChange("meta_keywords", e.target.value)
+                  }
                   placeholder="keyword1, keyword2, keyword3..."
                   className="mt-1"
                 />
@@ -235,24 +258,32 @@ export default function SEO() {
                   <Input
                     id="canonical-url"
                     value={seoData.canonical_url}
-                    onChange={(e) => handleChange('canonical_url', e.target.value)}
+                    onChange={(e) =>
+                      handleChange("canonical_url", e.target.value)
+                    }
                     placeholder="https://yourdomain.com/page"
-                    className={`flex-1 ${seoData.canonical_url && !validateUrl(seoData.canonical_url) ? 'border-red-300' : ''}`}
+                    className={`flex-1 ${seoData.canonical_url && !validateUrl(seoData.canonical_url) ? "border-red-300" : ""}`}
                   />
-                  {seoData.canonical_url && validateUrl(seoData.canonical_url) && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => window.open(seoData.canonical_url, '_blank')}
-                      className="flex items-center gap-1"
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                    </Button>
-                  )}
+                  {seoData.canonical_url &&
+                    validateUrl(seoData.canonical_url) && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          window.open(seoData.canonical_url, "_blank")
+                        }
+                        className="flex items-center gap-1"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                      </Button>
+                    )}
                 </div>
-                {seoData.canonical_url && !validateUrl(seoData.canonical_url) && (
-                  <p className="text-xs text-red-600 mt-1">Please enter a valid URL</p>
-                )}
+                {seoData.canonical_url &&
+                  !validateUrl(seoData.canonical_url) && (
+                    <p className="text-xs text-red-600 mt-1">
+                      Please enter a valid URL
+                    </p>
+                  )}
               </div>
             </CardContent>
           </Card>
@@ -271,12 +302,15 @@ export default function SEO() {
                 <Input
                   id="og-title"
                   value={seoData.og_title}
-                  onChange={(e) => handleChange('og_title', e.target.value)}
+                  onChange={(e) => handleChange("og_title", e.target.value)}
                   placeholder="Enter Open Graph title..."
-                  className={`mt-1 ${ogTitleCount.isOverLimit ? 'border-red-300' : ''}`}
+                  className={`mt-1 ${ogTitleCount.isOverLimit ? "border-red-300" : ""}`}
                 />
-                <p className={`text-xs mt-1 ${ogTitleCount.isOverLimit ? 'text-red-600' : 'text-gray-500'}`}>
-                  {ogTitleCount.count}/95 characters {ogTitleCount.isOverLimit && '(Too long for social media)'}
+                <p
+                  className={`text-xs mt-1 ${ogTitleCount.isOverLimit ? "text-red-600" : "text-gray-500"}`}
+                >
+                  {ogTitleCount.count}/95 characters{" "}
+                  {ogTitleCount.isOverLimit && "(Too long for social media)"}
                 </p>
               </div>
 
@@ -285,12 +319,18 @@ export default function SEO() {
                 <Textarea
                   id="og-description"
                   value={seoData.og_description}
-                  onChange={(e) => handleChange('og_description', e.target.value)}
+                  onChange={(e) =>
+                    handleChange("og_description", e.target.value)
+                  }
                   placeholder="Enter Open Graph description..."
-                  className={`mt-1 min-h-[80px] ${ogDescriptionCount.isOverLimit ? 'border-red-300' : ''}`}
+                  className={`mt-1 min-h-[80px] ${ogDescriptionCount.isOverLimit ? "border-red-300" : ""}`}
                 />
-                <p className={`text-xs mt-1 ${ogDescriptionCount.isOverLimit ? 'text-red-600' : 'text-gray-500'}`}>
-                  {ogDescriptionCount.count}/300 characters {ogDescriptionCount.isOverLimit && '(Too long for social media)'}
+                <p
+                  className={`text-xs mt-1 ${ogDescriptionCount.isOverLimit ? "text-red-600" : "text-gray-500"}`}
+                >
+                  {ogDescriptionCount.count}/300 characters{" "}
+                  {ogDescriptionCount.isOverLimit &&
+                    "(Too long for social media)"}
                 </p>
               </div>
 
@@ -308,7 +348,9 @@ export default function SEO() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => document.getElementById('og-image-upload')?.click()}
+                          onClick={() =>
+                            document.getElementById("og-image-upload")?.click()
+                          }
                           className="flex items-center gap-1"
                         >
                           <Upload className="w-3 h-3" />
@@ -317,7 +359,7 @@ export default function SEO() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleChange('og_image', '')}
+                          onClick={() => handleChange("og_image", "")}
                           className="text-red-600"
                         >
                           Remove
@@ -330,7 +372,9 @@ export default function SEO() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => document.getElementById('og-image-upload')?.click()}
+                        onClick={() =>
+                          document.getElementById("og-image-upload")?.click()
+                        }
                         className="flex items-center gap-1"
                       >
                         <Upload className="w-3 h-3" />
@@ -339,7 +383,7 @@ export default function SEO() {
                     </div>
                   )}
                 </div>
-                
+
                 <input
                   id="og-image-upload"
                   type="file"
@@ -347,11 +391,11 @@ export default function SEO() {
                   onChange={handleImageUpload}
                   className="hidden"
                 />
-                
+
                 <div className="mt-2">
                   <Input
                     value={seoData.og_image}
-                    onChange={(e) => handleChange('og_image', e.target.value)}
+                    onChange={(e) => handleChange("og_image", e.target.value)}
                     placeholder="Or enter image URL... (Recommended: 1200x630px)"
                     className="text-sm"
                   />
@@ -380,27 +424,34 @@ export default function SEO() {
                 <Input
                   id="facebook-pixel"
                   value={seoData.facebook_pixel_id}
-                  onChange={(e) => handleChange('facebook_pixel_id', e.target.value)}
+                  onChange={(e) =>
+                    handleChange("facebook_pixel_id", e.target.value)
+                  }
                   placeholder="Enter Facebook Pixel ID..."
                   className="mt-1"
                 />
                 {seoData.facebook_pixel_id && (
                   <div className="mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <p className="text-sm text-blue-800 font-medium">✅ Facebook Pixel Active</p>
+                    <p className="text-sm text-blue-800 font-medium">
+                      ✅ Facebook Pixel Active
+                    </p>
                     <p className="text-xs text-blue-600 mt-1">
                       Pixel ID: {seoData.facebook_pixel_id}
                     </p>
                   </div>
                 )}
                 <p className="text-xs text-gray-500 mt-1">
-                  When you save this, the Facebook Pixel will automatically start tracking on your website
+                  When you save this, the Facebook Pixel will automatically
+                  start tracking on your website
                 </p>
               </div>
 
               <Separator />
 
               <div className="p-4 bg-gray-50 rounded-lg">
-                <h4 className="font-medium text-gray-900 mb-2">Future Integrations</h4>
+                <h4 className="font-medium text-gray-900 mb-2">
+                  Future Integrations
+                </h4>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <div className="w-2 h-2 bg-gray-400 rounded-full" />
@@ -431,23 +482,28 @@ export default function SEO() {
               <div className="space-y-4">
                 {/* Google Search Result Preview */}
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-xs text-gray-500 mb-3">Google Search Result Preview:</p>
+                  <p className="text-xs text-gray-500 mb-3">
+                    Google Search Result Preview:
+                  </p>
                   <div className="space-y-1">
                     <h3 className="text-lg text-blue-600 font-medium cursor-pointer hover:underline line-clamp-1">
-                      {seoData.meta_title || 'Your Page Title'}
+                      {seoData.meta_title || "Your Page Title"}
                     </h3>
                     <p className="text-sm text-green-700">
-                      {seoData.canonical_url || 'https://yourdomain.com'}
+                      {seoData.canonical_url || "https://yourdomain.com"}
                     </p>
                     <p className="text-sm text-gray-600 line-clamp-2">
-                      {seoData.meta_description || 'Your meta description will appear here...'}
+                      {seoData.meta_description ||
+                        "Your meta description will appear here..."}
                     </p>
                   </div>
                 </div>
 
                 {/* Social Media Preview */}
                 <div className="p-4 bg-blue-50 rounded-lg">
-                  <p className="text-xs text-blue-600 mb-3">Social Media Preview:</p>
+                  <p className="text-xs text-blue-600 mb-3">
+                    Social Media Preview:
+                  </p>
                   <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                     {seoData.og_image && (
                       <img
@@ -458,13 +514,14 @@ export default function SEO() {
                     )}
                     <div className="p-3">
                       <h4 className="font-medium text-gray-900 line-clamp-1">
-                        {seoData.og_title || 'Your OG Title'}
+                        {seoData.og_title || "Your OG Title"}
                       </h4>
                       <p className="text-sm text-gray-600 line-clamp-2 mt-1">
-                        {seoData.og_description || 'Your OG description will appear here...'}
+                        {seoData.og_description ||
+                          "Your OG description will appear here..."}
                       </p>
                       <p className="text-xs text-gray-500 mt-2">
-                        {seoData.canonical_url || 'yourdomain.com'}
+                        {seoData.canonical_url || "yourdomain.com"}
                       </p>
                     </div>
                   </div>

@@ -28,52 +28,57 @@ const defaultWalmartData: WalmartData = {
   features: [
     {
       title: "Official Walmart Seller",
-      description: "Secure checkout and fast delivery"
+      description: "Secure checkout and fast delivery",
     },
     {
       title: "Pro Seller",
       description: "from 570 reviews",
-      rating: 4.8
+      rating: 4.8,
     },
     {
       title: "Free 90-Day Returns",
-      description: "Shop with confidence - easy returns"
-    }
+      description: "Shop with confidence - easy returns",
+    },
   ],
   button: {
     label: "View Product Details",
-    popup_link: ""
-  }
+    popup_link: "",
+  },
 };
 
 export default function Walmart() {
-  const [walmartData, setWalmartData] = useState<WalmartData>(defaultWalmartData);
+  const [walmartData, setWalmartData] =
+    useState<WalmartData>(defaultWalmartData);
   const [isSaving, setIsSaving] = useState(false);
 
   const handleTitleChange = (value: string) => {
-    setWalmartData(prev => ({ ...prev, title: value }));
+    setWalmartData((prev) => ({ ...prev, title: value }));
   };
 
-  const handleFeatureChange = (index: number, field: keyof WalmartFeature, value: string | number) => {
-    setWalmartData(prev => ({
+  const handleFeatureChange = (
+    index: number,
+    field: keyof WalmartFeature,
+    value: string | number,
+  ) => {
+    setWalmartData((prev) => ({
       ...prev,
-      features: prev.features.map((feature, i) => 
-        i === index ? { ...feature, [field]: value } : feature
-      )
+      features: prev.features.map((feature, i) =>
+        i === index ? { ...feature, [field]: value } : feature,
+      ),
     }));
   };
 
   const handleRatingChange = (index: number, value: string) => {
     const rating = parseFloat(value);
     if (!isNaN(rating) && rating >= 0 && rating <= 5) {
-      handleFeatureChange(index, 'rating', rating);
+      handleFeatureChange(index, "rating", rating);
     }
   };
 
   const adjustRating = (index: number, increment: number) => {
     const currentRating = walmartData.features[index].rating || 0;
     const newRating = Math.max(0, Math.min(5, currentRating + increment));
-    handleFeatureChange(index, 'rating', newRating);
+    handleFeatureChange(index, "rating", newRating);
   };
 
   const toggleRating = (index: number) => {
@@ -87,20 +92,20 @@ export default function Walmart() {
         }
         return feature;
       });
-      setWalmartData(prev => ({ ...prev, features: updatedFeatures }));
+      setWalmartData((prev) => ({ ...prev, features: updatedFeatures }));
     } else {
       // Add rating
-      handleFeatureChange(index, 'rating', 4.0);
+      handleFeatureChange(index, "rating", 4.0);
     }
   };
 
   const handleButtonChange = (field: string, value: string) => {
-    setWalmartData(prev => ({
+    setWalmartData((prev) => ({
       ...prev,
       button: {
         ...prev.button,
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
@@ -108,12 +113,12 @@ export default function Walmart() {
     setIsSaving(true);
     try {
       console.log("Saving walmart data:", walmartData);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      localStorage.setItem('walmart_section', JSON.stringify(walmartData));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      localStorage.setItem("walmart_section", JSON.stringify(walmartData));
+
       alert("Walmart section saved successfully!");
     } catch (error) {
       console.error("Error saving walmart data:", error);
@@ -125,7 +130,7 @@ export default function Walmart() {
 
   // Load data on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem('walmart_section');
+    const savedData = localStorage.getItem("walmart_section");
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
@@ -139,9 +144,11 @@ export default function Walmart() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Walmart Section Management</h2>
-        <Button 
-          onClick={handleSave} 
+        <h2 className="text-2xl font-bold text-gray-900">
+          Walmart Section Management
+        </h2>
+        <Button
+          onClick={handleSave}
           disabled={isSaving}
           className="flex items-center gap-2"
         >
@@ -191,7 +198,9 @@ export default function Walmart() {
                   className="flex items-center gap-1"
                 >
                   <Star className="w-4 h-4" />
-                  {feature.rating !== undefined ? "Remove Rating" : "Add Rating"}
+                  {feature.rating !== undefined
+                    ? "Remove Rating"
+                    : "Add Rating"}
                 </Button>
               </CardTitle>
             </CardHeader>
@@ -203,7 +212,9 @@ export default function Walmart() {
                   <Input
                     id={`feature-title-${index}`}
                     value={feature.title}
-                    onChange={(e) => handleFeatureChange(index, 'title', e.target.value)}
+                    onChange={(e) =>
+                      handleFeatureChange(index, "title", e.target.value)
+                    }
                     placeholder="Enter feature title..."
                     className="mt-1"
                   />
@@ -215,7 +226,9 @@ export default function Walmart() {
                   <Input
                     id={`feature-desc-${index}`}
                     value={feature.description}
-                    onChange={(e) => handleFeatureChange(index, 'description', e.target.value)}
+                    onChange={(e) =>
+                      handleFeatureChange(index, "description", e.target.value)
+                    }
                     placeholder="Enter feature description..."
                     className="mt-1"
                   />
@@ -225,7 +238,9 @@ export default function Walmart() {
               {/* Star Rating (if enabled) */}
               {feature.rating !== undefined && (
                 <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                  <Label className="text-sm font-medium text-yellow-800">Star Rating</Label>
+                  <Label className="text-sm font-medium text-yellow-800">
+                    Star Rating
+                  </Label>
                   <div className="flex items-center gap-4 mt-2">
                     <div className="flex-1">
                       <Input
@@ -234,7 +249,9 @@ export default function Walmart() {
                         max="5"
                         step="0.1"
                         value={feature.rating}
-                        onChange={(e) => handleRatingChange(index, e.target.value)}
+                        onChange={(e) =>
+                          handleRatingChange(index, e.target.value)
+                        }
                         className="w-20"
                       />
                     </div>
@@ -257,7 +274,7 @@ export default function Walmart() {
                       </Button>
                     </div>
                   </div>
-                  
+
                   {/* Star Display */}
                   <div className="flex items-center gap-2 mt-3">
                     <div className="flex">
@@ -266,21 +283,24 @@ export default function Walmart() {
                           key={i}
                           className={cn(
                             "h-5 w-5",
-                            i < Math.floor(feature.rating!) 
-                              ? "text-yellow-400 fill-current" 
-                              : i < feature.rating! 
-                                ? "text-yellow-400 fill-current" 
-                                : "text-gray-300"
+                            i < Math.floor(feature.rating!)
+                              ? "text-yellow-400 fill-current"
+                              : i < feature.rating!
+                                ? "text-yellow-400 fill-current"
+                                : "text-gray-300",
                           )}
                         />
                       ))}
                     </div>
-                    <Badge variant="secondary">{feature.rating.toFixed(1)}</Badge>
+                    <Badge variant="secondary">
+                      {feature.rating.toFixed(1)}
+                    </Badge>
                   </div>
-                  
+
                   <div className="mt-2">
                     <p className="text-sm text-gray-600">
-                      <strong>Preview:</strong> {feature.rating.toFixed(1)} ⭐ ({feature.description})
+                      <strong>Preview:</strong> {feature.rating.toFixed(1)} ⭐ (
+                      {feature.description})
                     </p>
                   </div>
                 </div>
@@ -301,7 +321,7 @@ export default function Walmart() {
             <Input
               id="button-label"
               value={walmartData.button.label}
-              onChange={(e) => handleButtonChange('label', e.target.value)}
+              onChange={(e) => handleButtonChange("label", e.target.value)}
               placeholder="Enter button label..."
               className="mt-1"
             />
@@ -313,7 +333,9 @@ export default function Walmart() {
               <Input
                 id="button-popup"
                 value={walmartData.button.popup_link}
-                onChange={(e) => handleButtonChange('popup_link', e.target.value)}
+                onChange={(e) =>
+                  handleButtonChange("popup_link", e.target.value)
+                }
                 placeholder="Enter popup modal link..."
                 className="flex-1"
               />
@@ -334,7 +356,9 @@ export default function Walmart() {
               {walmartData.features.map((feature, index) => (
                 <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
                   <h4 className="font-semibold">{feature.title}</h4>
-                  <p className="text-sm text-gray-600 mt-1">{feature.description}</p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {feature.description}
+                  </p>
                   {feature.rating !== undefined && (
                     <div className="flex items-center gap-1 mt-2">
                       {[...Array(5)].map((_, i) => (
@@ -342,13 +366,15 @@ export default function Walmart() {
                           key={i}
                           className={cn(
                             "h-4 w-4",
-                            i < Math.floor(feature.rating!) 
-                              ? "text-yellow-400 fill-current" 
-                              : "text-gray-300"
+                            i < Math.floor(feature.rating!)
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-300",
                           )}
                         />
                       ))}
-                      <span className="text-sm font-medium ml-1">{feature.rating.toFixed(1)}</span>
+                      <span className="text-sm font-medium ml-1">
+                        {feature.rating.toFixed(1)}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -360,7 +386,6 @@ export default function Walmart() {
           </div>
         </CardContent>
       </Card>
-
     </div>
   );
 }
