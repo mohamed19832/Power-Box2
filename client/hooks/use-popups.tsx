@@ -121,7 +121,12 @@ export function PopupProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (exitError && exitError.code !== "PGRST116") {
-        console.error("Error loading exit intent popup data:", exitError);
+        console.error("Error loading exit intent popup data:", {
+          message: exitError.message,
+          code: exitError.code,
+          details: exitError.details,
+          hint: exitError.hint
+        });
       } else if (exitData && exitData.content) {
         setExitIntentPopupData({
           ...defaultExitIntentPopupData,
