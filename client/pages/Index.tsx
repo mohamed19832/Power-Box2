@@ -97,8 +97,6 @@ export default function Index() {
       ?.scrollIntoView({ behavior: "smooth" });
   };
 
-
-
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden">
