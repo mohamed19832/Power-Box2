@@ -72,10 +72,7 @@ export function SEOProvider({ children }: { children: ReactNode }) {
         setSeoData({ ...defaultSEOData, ...data.content });
       }
     } catch (error) {
-      console.error("Error loading SEO data (catch):", {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        error: error
-      });
+      console.info("Using default SEO data due to database connection issue");
     } finally {
       setIsLoading(false);
     }
