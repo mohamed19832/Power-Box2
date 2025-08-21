@@ -2,15 +2,12 @@ import { useState, useEffect } from "react";
 import { useTracking } from "@/hooks/use-seo";
 import { motion } from "framer-motion";
 import {
-  X,
   Star,
   ShoppingCart,
   Check,
   Zap,
   Users,
   Shield,
-  ChevronLeft,
-  ChevronRight,
   Gift,
   Package,
   Heart,
