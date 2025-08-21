@@ -783,12 +783,11 @@ export default function Index() {
         <StickyCTA onClick={handleCardClick} />
 
         {/* Exit Intent Popup */}
-        {showExitIntent && (
-          <ExitIntentPopup
-            onClose={handleCloseExitIntent}
-            onSubscribe={handleSubscribe}
-          />
-        )}
+        <EnhancedExitIntentPopup
+          isOpen={showExitIntent}
+          onClose={handleCloseExitIntent}
+          onSubscribe={handleSubscribe}
+        />
       </div>
 
       {/* Enhanced Structured Data */}
