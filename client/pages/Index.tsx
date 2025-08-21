@@ -88,6 +88,8 @@ export default function Index() {
   const handleProceedToWalmart = () => {
     // Actually redirect to Walmart
     console.log("Proceeding to Walmart checkout");
+    // Track add to cart / purchase intent
+    trackAddToCart("Nutritious Snack Box - 42 Count", salePrice);
     const link = document.createElement("a");
     link.href = walmartUrl;
     link.target = "_blank";
