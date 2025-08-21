@@ -97,15 +97,6 @@ export default function Index() {
       ?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % productImages.length);
-  };
-
-  const prevImage = () => {
-    setCurrentImageIndex(
-      (prev) => (prev - 1 + productImages.length) % productImages.length,
-    );
-  };
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
