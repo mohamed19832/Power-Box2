@@ -102,14 +102,17 @@ export function PopupProvider({ children }: { children: ReactNode }) {
           .single();
 
         if (productError) {
-          if (productError.code === "PGRST116" || productError.code === "42P01") {
+          if (
+            productError.code === "PGRST116" ||
+            productError.code === "42P01"
+          ) {
             console.info("Product popup table not found, using default data");
           } else {
             console.error("Error loading product popup data:", {
               message: productError.message,
               code: productError.code,
               details: productError.details,
-              hint: productError.hint
+              hint: productError.hint,
             });
           }
         } else if (productData && productData.content) {
@@ -119,7 +122,9 @@ export function PopupProvider({ children }: { children: ReactNode }) {
           });
         }
       } catch (productCatchError) {
-        console.info("Product popup table likely doesn't exist, using defaults");
+        console.info(
+          "Product popup table likely doesn't exist, using defaults",
+        );
       }
 
       // Load Exit Intent Popup Data
@@ -131,13 +136,15 @@ export function PopupProvider({ children }: { children: ReactNode }) {
 
         if (exitError) {
           if (exitError.code === "PGRST116" || exitError.code === "42P01") {
-            console.info("Exit intent popup table not found, using default data");
+            console.info(
+              "Exit intent popup table not found, using default data",
+            );
           } else {
             console.error("Error loading exit intent popup data:", {
               message: exitError.message,
               code: exitError.code,
               details: exitError.details,
-              hint: exitError.hint
+              hint: exitError.hint,
             });
           }
         } else if (exitData && exitData.content) {
@@ -147,7 +154,9 @@ export function PopupProvider({ children }: { children: ReactNode }) {
           });
         }
       } catch (exitCatchError) {
-        console.info("Exit intent popup table likely doesn't exist, using defaults");
+        console.info(
+          "Exit intent popup table likely doesn't exist, using defaults",
+        );
       }
     } catch (error) {
       console.info("Using default popup data due to database connection issue");

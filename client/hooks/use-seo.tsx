@@ -62,7 +62,7 @@ export function SEOProvider({ children }: { children: ReactNode }) {
             message: error.message,
             code: error.code,
             details: error.details,
-            hint: error.hint
+            hint: error.hint,
           });
         }
         return;
