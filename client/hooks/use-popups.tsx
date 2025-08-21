@@ -102,19 +102,17 @@ export function PopupProvider({ children }: { children: ReactNode }) {
           .single();
 
         if (productError) {
+          // Silently handle expected missing table errors
           if (
             productError.code === "PGRST116" ||
-            productError.code === "42P01"
+            productError.code === "42P01" ||
+            productError.message?.includes('relation') ||
+            productError.message?.includes('table')
           ) {
-            console.info("Product popup table not found, using default data");
+            // Expected: table doesn't exist yet, using defaults
           } else {
-            console.error("Error loading product popup data - DETAILED:", {
-              message: productError?.message || 'No message',
-              code: productError?.code || 'No code',
-              details: productError?.details || 'No details',
-              hint: productError?.hint || 'No hint',
-              fullError: JSON.stringify(productError)
-            });
+            // Only log unexpected errors
+            console.warn("Unexpected product popup error:", productError.code, productError.message);
           }
         } else if (productData && productData.content) {
           setProductPopupData({
