@@ -361,17 +361,6 @@ export default function Walmart() {
         </CardContent>
       </Card>
 
-      {/* JSON Preview */}
-      <Card>
-        <CardHeader>
-          <CardTitle>JSON Preview</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <pre className="text-xs bg-gray-50 p-4 rounded-lg overflow-auto max-h-60">
-            {JSON.stringify(walmartData, null, 2)}
-          </pre>
-        </CardContent>
-      </Card>
     </div>
   );
 }
