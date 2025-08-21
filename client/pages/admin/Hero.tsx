@@ -501,17 +501,6 @@ export default function Hero() {
             </CardContent>
           </Card>
 
-          {/* Preview JSON */}
-          <Card>
-            <CardHeader>
-              <CardTitle>JSON Preview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <pre className="text-xs bg-gray-50 p-3 rounded-lg overflow-auto max-h-40">
-                {JSON.stringify(heroData, null, 2)}
-              </pre>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>
