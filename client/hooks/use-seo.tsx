@@ -68,7 +68,10 @@ export function SEOProvider({ children }: { children: ReactNode }) {
         setSeoData({ ...defaultSEOData, ...data.content });
       }
     } catch (error) {
-      console.error("Error loading SEO data:", error);
+      console.error("Error loading SEO data (catch):", {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        error: error
+      });
     } finally {
       setIsLoading(false);
     }
