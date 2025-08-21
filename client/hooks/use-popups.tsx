@@ -134,7 +134,10 @@ export function PopupProvider({ children }: { children: ReactNode }) {
         });
       }
     } catch (error) {
-      console.error("Error loading popup data:", error);
+      console.error("Error loading popup data (catch):", {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        error: error
+      });
     } finally {
       setIsLoading(false);
     }
