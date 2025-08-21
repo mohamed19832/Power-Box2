@@ -134,18 +134,17 @@ export function PopupProvider({ children }: { children: ReactNode }) {
           .single();
 
         if (exitError) {
-          if (exitError.code === "PGRST116" || exitError.code === "42P01") {
-            console.info(
-              "Exit intent popup table not found, using default data",
-            );
+          // Silently handle expected missing table errors
+          if (
+            exitError.code === "PGRST116" ||
+            exitError.code === "42P01" ||
+            exitError.message?.includes('relation') ||
+            exitError.message?.includes('table')
+          ) {
+            // Expected: table doesn't exist yet, using defaults
           } else {
-            console.error("Error loading exit intent popup data - DETAILED:", {
-              message: exitError?.message || 'No message',
-              code: exitError?.code || 'No code',
-              details: exitError?.details || 'No details',
-              hint: exitError?.hint || 'No hint',
-              fullError: JSON.stringify(exitError)
-            });
+            // Only log unexpected errors
+            console.warn("Unexpected exit intent popup error:", exitError.code, exitError.message);
           }
         } else if (exitData && exitData.content) {
           setExitIntentPopupData({
