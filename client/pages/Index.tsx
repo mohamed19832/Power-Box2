@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTracking } from "@/hooks/use-seo";
 import { motion } from "framer-motion";
 import {
   X,
