@@ -6,29 +6,61 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SEOProvider } from "@/hooks/use-seo";
+import { PopupProvider } from "@/hooks/use-popups";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import { AdminLayout } from "./components/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import Hero from "./pages/admin/Hero";
+import WhyChoose from "./pages/admin/WhyChoose";
+import Walmart from "./pages/admin/Walmart";
+import InsideBox from "./pages/admin/InsideBox";
+import Testimonials from "./pages/admin/Testimonials";
+import OfferPricing from "./pages/admin/OfferPricing";
+import Footer from "./pages/admin/Footer";
+import SEO from "./pages/admin/SEO";
+import Popups from "./pages/admin/Popups";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <SEOProvider>
+      <PopupProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
+            <Routes>
+              <Route path="/" element={<Index />} />
+
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="hero" element={<Hero />} />
+                <Route path="why-choose" element={<WhyChoose />} />
+                <Route path="walmart" element={<Walmart />} />
+                <Route path="inside-box" element={<InsideBox />} />
+                <Route path="testimonials" element={<Testimonials />} />
+                <Route path="offer-pricing" element={<OfferPricing />} />
+                <Route path="footer" element={<Footer />} />
+                <Route path="seo" element={<SEO />} />
+                <Route path="popups" element={<Popups />} />
+              </Route>
+
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </PopupProvider>
+    </SEOProvider>
   </QueryClientProvider>
 );
 
